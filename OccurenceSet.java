@@ -16,9 +16,10 @@ public class OccurenceSet<T> implements Set<T>{
 		
 	}//End Constructor
 	@Override
-	public boolean add(T arg0) {
+	public boolean add(T key) {
 		//Track how many times an element has been added to the set.
-		return super.add(arg0);
+		int value = 1;
+		hashMap.put(key, 1);
 		return false;
 	}
 
@@ -52,6 +53,7 @@ public class OccurenceSet<T> implements Set<T>{
 	@Override
 	public boolean isEmpty() {
 		// Check to see if the Set is empty
+		
 		return false;
 	}
 
