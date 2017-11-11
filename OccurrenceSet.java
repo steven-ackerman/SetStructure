@@ -1,16 +1,31 @@
 //Imports:
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+
 
 //Begin Class:
 public class OccurrenceSet<T> implements Set<T>{
 	//Class Variables:
 	Object key;
-	int value;
+	int value = 1;
+	
 	//Create a HashMap<T, Integer>
 	HashMap<T, Integer> hashMap= new HashMap<T, Integer>();
+	//Create a Set from the HashMap object:
+	Set<?> hashSet = hashMap.entrySet();
+	//Create an Iterator for the Set from the hashSet.
+	Iterator<?> it = hashSet.iterator();
+	//Create a HashTable:
+	Hashtable<T, Integer> hashTable = new Hashtable<T, Integer>();
+	
 	//Constructor:
 	public OccurrenceSet(Object k, int v) {
 		
@@ -19,27 +34,38 @@ public class OccurrenceSet<T> implements Set<T>{
 	public boolean add(T key) {
 		//Track how many times an element has been added to the set.
 		//int counter = hashMap.get(key);
-		int value = 1;
-		if (hashMap.get(key) != null){
-			//Get the value and keyvalue++;
-			hashMap.containsKey(key);
+		//int value = 1;
+		//hashMap.putIfAbsent(key, value);
+		
+		if (hashMap.containsKey(key)){
+			//Get the value and key, then increase the value++;
+			int value = hashMap.get(key);
 			value++;
+			hashMap.putIfAbsent(key, value);
 			//hashMap.put(key, value);
-			
+			return false;
+		}else {
+			hashMap.put(key, value);
 		}
 			
 		
 		
-	return false;
+	return true;
 		
 	}
 		
 	
 
 	@Override
-	public boolean addAll(Collection<? extends T> arg0) {
+	public boolean addAll(Collection<? extends T> collection) throws NullPointerException{
 		// Track how many times an element has been added to the set.
-		return false;
+		Map.Entry entry = (Entry<?, ?>) it.next();
+		Enumeration e = ((Hashtable<T,Integer>) collection).elements();
+		while (e.hasMoreElements()){
+			//Collections.addAll(hashMap,collection);
+			((HashMap<T,Integer>) ((Enumeration) e).nextElement()).putAll(hashMap);
+		    }
+		return true;
 	}
 
 	@Override
@@ -121,3 +147,14 @@ public class OccurrenceSet<T> implements Set<T>{
 
 
 }//End OccurenceSet Class.
+
+/*--------<Sources>---------*
+ * 
+ * Java Docs:
+ * https://docs.oracle.com/javase/7/docs/api/java/util/Map.Entry.html
+ * 
+ * Java Collections Tutorial:
+ * http://www.java2s.com/Tutorial/Java/0140__Collections/CreateJavaHashtablefromHashMap.htm
+ * 
+ * -------<End Sources>-----*
+ */
